@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: ohhcode
+  datasource:
+    url: jdbc:mysql://localhost:3306/ohhcode?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+#    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+# JWTS
+
+jwt:
+  secret:
+    key: thisisaVeryVeryLong^753301KeyAndKeep*73123AsIs
+  expiry:
+    ms: 86400000
+
+# CLOUDINARY
+cloudinary:
+  cloud_name: dhqi6b3vv
+  api_key: 938714873168828
+  api_secret: w58Mzr1cSyKE7azhgz39mxImEjo
+
+
+
+
