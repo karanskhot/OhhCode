@@ -2,8 +2,7 @@ spring:
   application:
     name: ohhcode
   datasource:
-#    url: jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:ohhcode}?createDatabaseIfNotExist=true
-    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}?useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    url: jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:ohhcode}?useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
     username: ${MYSQLUSER:root}
 
     password: ${MYSQLPASSWORD:root}
