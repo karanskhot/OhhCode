@@ -2,9 +2,9 @@ spring:
   application:
     name: ohhcode
   datasource:
-    url: jdbc:mysql://localhost:3306/ohhcode?createDatabaseIfNotExist=true
-    username: root
-    password: root
+    url: jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:ohhcode}?createDatabaseIfNotExist=true
+    username: ${MYSQLUSER:root}
+    password: ${MYSQLPASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
 #    database-platform: org.hibernate.dialect.MySQLDialect
@@ -25,7 +25,7 @@ spring:
       max-file-size: 2MB
       max-request-size: 2MB
 server:
-  port: 8080
+  port: ${PORT:8080}
   servlet:
     context-path: /api/v1
 
@@ -33,15 +33,15 @@ server:
 
 jwt:
   secret:
-    key: thisisaVeryVeryLong^753301KeyAndKeep*73123AsIs
+    key: ${JWT_SECRET}
   expiry:
     ms: 86400000
 
 # CLOUDINARY
 cloudinary:
-  cloud_name: dhqi6b3vv
-  api_key: 938714873168828
-  api_secret: w58Mzr1cSyKE7azhgz39mxImEjo
+  cloud_name: ${CLOUDINARY_CLOUD_NAME}
+  api_key: ${CLOUDINARY_API_KEY}
+  api_secret: ${CLOUDINARY_API_SECRET}
 
 
 
