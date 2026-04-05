@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -59,6 +60,7 @@ public class SnippetAnalyzerService {
     snippet.setStatus(SnippetStatus.ANALYZING);
     String rawResponse = aiSnippetAnalyzer.aiSnippetAnalyzer(snippet);
     boolean isValid = aiSnippetAnalyzer.extractIsValid(rawResponse);
+
 
     AnalyzerEntity snippetAnalyzer =
         AnalyzerEntity.builder().snippet(snippet).user(user).jsonResponse(rawResponse).build();
@@ -131,14 +133,18 @@ public class SnippetAnalyzerService {
                         "User Unauthorized to regenerate analysis for snippet."));
 
     if (snippet.getStatus() == SnippetStatus.ANALYZING) {
-      throw new IllegalStateException("Snippet analysis is already being analyzed.");
+      return new AnalyzerResponseDto(
+          null,
+          "Snippet analysis is already being analyzed.",
+          snippet.getStatus(),
+          snippet.getId());
     }
 
     analyzerRepository
         .findBySnippetIdAndUserId(snippetId, user.getId())
         .ifPresent(snippetAnalyzer -> deleteAnalysis(snippetAnalyzer.getId()));
 
-    return generateSnippetAnalysis(snippetId);
+    return createSnippetAnalysisAsync(snippetId);
   }
 
   @Transactional
@@ -157,6 +163,7 @@ public class SnippetAnalyzerService {
     // 1: Check if already exists.
     Optional<AnalyzerEntity> existingAnalysis =
         analyzerRepository.findBySnippetIdAndUserId(snippetId, user.getId());
+
     if (existingAnalysis.isPresent()) {
       return new AnalyzerResponseDto(
           existingAnalysis.get().getId(), existingAnalysis.get().getJsonResponse(),

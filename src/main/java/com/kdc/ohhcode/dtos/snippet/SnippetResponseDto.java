@@ -4,6 +4,7 @@ import com.kdc.ohhcode.entities.enums.Difficulty;
 import com.kdc.ohhcode.entities.enums.Language;
 import com.kdc.ohhcode.entities.enums.SnippetStatus;
 
+import java.util.Set;
 import java.util.UUID;
 
 public record SnippetResponseDto(
@@ -16,5 +17,7 @@ public record SnippetResponseDto(
         Difficulty difficulty,
         boolean important,
         SnippetStatus snippet,
-        Language language) {
+        Language language,
+        Set<String> tags
+        ) {
 }

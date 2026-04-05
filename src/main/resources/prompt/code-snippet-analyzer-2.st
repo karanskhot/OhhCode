@@ -157,10 +157,12 @@ FIELD RULES:
   → prefer standard naming (e.g., LeetCode-style)
 
 - meta.tags:
-  → MUST be selected ONLY from:
-    Array, String, Math, Sorting, Greedy, Binary Search,
-    Two Pointer, Sliding Window, Dynamic Programming,
-    Graph, Tree, Stack, Queue, Recursion, Backtracking, Unknown
+    STRICT RULES:
+    - meta.tags MUST be selected ONLY from this list: {{tags}}
+    - Do NOT create new tags
+    - Use exact spelling
+    - Select 1-3 best suiting tags
+    - If unsure, return empty array []
 
 - meta.difficulty:
   → EASY | MEDIUM | HARD | AMBITIOUS

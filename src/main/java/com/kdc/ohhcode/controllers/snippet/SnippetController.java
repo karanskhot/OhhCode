@@ -26,7 +26,6 @@ public class SnippetController {
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(codeSnippetService.createSnippet(snippetRequestDto));
   }
-
   @GetMapping
   public ResponseEntity<List<SnippetResponseDto>> getAllSnippets() {
     return ResponseEntity.status(HttpStatus.OK).body(codeSnippetService.getAllCodeSnippets());

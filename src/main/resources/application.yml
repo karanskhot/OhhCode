@@ -21,6 +21,7 @@ spring:
       chat:
         options:
           model: gpt-4o-mini
+#          model: gpt-5.4-mini
   servlet:
     multipart:
       max-file-size: 2MB

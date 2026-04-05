@@ -17,9 +17,10 @@ public class SnippetMapper {
                              .getId(),
                 snippetEntity.getMemoryNotes(),
                 snippetEntity.getDifficulty(),
-                snippetEntity.isImportant(),
+                snippetEntity.getImportant(),
                 snippetEntity.getStatus(),
-                snippetEntity.getLanguage()
+                snippetEntity.getLanguage(),
+                snippetEntity.getTags()
                 );
     }
 }

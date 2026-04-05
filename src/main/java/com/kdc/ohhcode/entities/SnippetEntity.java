@@ -9,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -36,7 +38,7 @@ public class SnippetEntity {
     @Column(name = "hash_code",  nullable = false)
     private String hashCode;
 
-    private boolean important;
+    private Boolean important;
 
     @Column(name = "memory_notes")
     private String memoryNotes;
@@ -52,6 +54,11 @@ public class SnippetEntity {
     @Column(name = "language")
     @Enumerated(EnumType.STRING)
     private Language language;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "snippet_tags", joinColumns = @JoinColumn(name = "snippet_id"))
+    @Column(name = "tag")
+    private Set<String> tags = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

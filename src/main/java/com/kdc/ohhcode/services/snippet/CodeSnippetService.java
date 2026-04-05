@@ -18,10 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -61,7 +58,7 @@ public class CodeSnippetService {
     Language language = Objects.requireNonNullElse(snippetRequestDto.language(), Language.ENGLISH);
     Difficulty difficulty =
         Objects.requireNonNullElse(snippetRequestDto.difficulty(), Difficulty.MEDIUM);
-    boolean important = snippetRequestDto.important() != null && !snippetRequestDto.important();
+
     SnippetEntity snippetEntity =
         SnippetEntity.builder()
             .title(snippetRequestDto.title())
@@ -70,7 +67,8 @@ public class CodeSnippetService {
             .status(SnippetStatus.UPLOADED)
             .language(language)
             .difficulty(difficulty)
-            .important(important)
+            .important(Boolean.TRUE.equals(snippetRequestDto.important()))
+            .tags(Collections.emptySet())
             .user(user)
             .memoryNotes(snippetRequestDto.memoryNotes())
             .build();
