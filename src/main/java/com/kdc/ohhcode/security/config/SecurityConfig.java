@@ -24,63 +24,44 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final HandlerExceptionResolver handlerExceptionResolver;
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
+  private final HandlerExceptionResolver handlerExceptionResolver;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .rememberMe(AbstractHttpConfigurer::disable)
-                .securityContext(sc -> sc.securityContextRepository(new NullSecurityContextRepository()))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(
-                                "/auth/login",
-                                "/auth/register",
-                                "/oauth2/**",
-                                "/health"
-                                                                   )
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exceptionHandler -> exceptionHandler.accessDeniedHandler((request, response, accessDeniedException) ->
-                                                                                                    handlerExceptionResolver.resolveException(
-                                                                                                            request,
-                                                                                                            response,
-                                                                                                            null,
-                                                                                                            accessDeniedException)
-                                                                                           ));
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf(AbstractHttpConfigurer::disable)
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .formLogin(AbstractHttpConfigurer::disable)
+        .httpBasic(AbstractHttpConfigurer::disable)
+        .rememberMe(AbstractHttpConfigurer::disable)
+        .securityContext(sc -> sc.securityContextRepository(new NullSecurityContextRepository()))
+        .authorizeHttpRequests(
+            auth ->
+                auth.requestMatchers("/auth/login", "/auth/register", "/oauth2/**", "/health")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling(
+            exceptionHandler ->
+                exceptionHandler.accessDeniedHandler(
+                    (request, response, accessDeniedException) ->
+                        handlerExceptionResolver.resolveException(
+                            request, response, null, accessDeniedException)));
+    return http.build();
+  }
 
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(List.of(
-                "GET",
-                "POST",
-                "PUT",
-                "PATCH",
-                "DELETE",
-                "OPTIONS"));
-        configuration.setAllowedHeaders(List.of(
-                "Authorization",
-                "Cache-Control",
-                "Content-Type"));
-        configuration.setAllowCredentials(true);
-        configuration.setExposedHeaders(List.of("Set-Cookie"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration(
-                "/**",
-                configuration);
-        return source;
-
-    }
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+    configuration.setAllowCredentials(true);
+    configuration.setExposedHeaders(List.of("Set-Cookie"));
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
 }

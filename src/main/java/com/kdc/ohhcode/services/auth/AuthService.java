@@ -28,7 +28,7 @@ public class AuthService {
         if (userRepository.existsByUsername(registerRequestDto.username())) {
             throw new DataIntegrityViolationException("user already exists.");
         }
-        Role role = Role.ROLE_USER;
+        Role role = registerRequestDto.role() != null ? registerRequestDto.role() : Role.ROLE_USER;
 
 
         UserEntity user = UserEntity.builder()
